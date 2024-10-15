@@ -2,12 +2,14 @@
 import 'react-native-get-random-values';
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CryptoJS from 'crypto-js';
 
-export default function DecryptScreen({ route }) {
+export default function DecryptScreen({ route, navigation }) {
     const { textoCriptografado } = route.params;
     const [chave, setChave] = useState('');
     const [textoDescriptografado, setTextoDescriptografado] = useState('');
+    const [isDecrypted, setIsDecrypted] = useState(false);
 
     const descriptografarTexto = () => {
         if (chave === '') {
@@ -22,8 +24,26 @@ export default function DecryptScreen({ route }) {
                 return;
             }
             setTextoDescriptografado(textoDecifrado);
+            setIsDecrypted(true);
         } catch (error) {
             Alert.alert('Erro', 'Falha ao descriptografar o texto.');
+        }
+    };
+
+    const deletarTexto = async () => {
+        if (!isDecrypted) {
+            Alert.alert('Erro', 'Você só pode deletar o texto após descriptografá-lo.');
+            return;
+        }
+        try {
+            let textosArmazenados = await AsyncStorage.getItem('textos');
+            textosArmazenados = textosArmazenados ? JSON.parse(textosArmazenados) : [];
+            const updatedTextos = textosArmazenados.filter(item => item !== textoCriptografado);
+            await AsyncStorage.setItem('textos', JSON.stringify(updatedTextos));
+            Alert.alert('Sucesso', 'Texto deletado com sucesso.');
+            navigation.goBack();
+        } catch (error) {
+            Alert.alert('Erro', 'Falha ao deletar o texto.');
         }
     };
 
@@ -43,6 +63,7 @@ export default function DecryptScreen({ route }) {
                 <View style={styles.decryptedContainer}>
                     <Text style={styles.label}>Texto Descriptografado:</Text>
                     <Text style={styles.decryptedText}>{textoDescriptografado}</Text>
+                    <Button title="Deletar Texto" onPress={deletarTexto} color="red" />
                 </View>
             )}
         </View>
@@ -75,5 +96,6 @@ const styles = StyleSheet.create({
     decryptedText: {
         fontSize: 16,
         color: 'green',
+        marginBottom: 15,
     },
 });

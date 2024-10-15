@@ -19,21 +19,25 @@ export default function EncryptedTextsScreen({ navigation }) {
         return unsubscribe;
     }, [navigation]);
 
+    const handleDecrypt = (index) => {
+        navigation.navigate('Descriptografar Texto', {
+            textoCriptografado: textos[index],
+        });
+    };
+
     return (
         <View style={styles.container}>
             <FlatList
                 data={textos}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        onPress={() =>
-                            navigation.navigate('Descriptografar Texto', { textoCriptografado: item })
-                        }
-                    >
-                        <View style={styles.item}>
-                            <Text>{item}</Text>
-                        </View>
-                    </TouchableOpacity>
+                renderItem={({ item, index }) => (
+                    <View style={styles.itemContainer}>
+                        <TouchableOpacity style={{ flex: 1 }} onPress={() => handleDecrypt(index)}>
+                            <View style={styles.item}>
+                                <Text>{item}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 )}
                 ListEmptyComponent={<Text>Nenhum texto criptografado encontrado.</Text>}
             />
@@ -46,6 +50,12 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: '#fff',
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 10,
     },
     item: {
         padding: 15,
