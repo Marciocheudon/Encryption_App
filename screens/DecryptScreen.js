@@ -49,23 +49,25 @@ export default function DecryptScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>Texto Criptografado:</Text>
-            <Text style={styles.encryptedText}>{textoCriptografado}</Text>
-            <TextInput
-                placeholder="Insira a chave de criptografia"
-                style={styles.input}
-                secureTextEntry
-                value={chave}
-                onChangeText={setChave}
-            />
-            <Button title="Descriptografar Texto" onPress={descriptografarTexto} />
-            {textoDescriptografado !== '' && (
-                <View style={styles.decryptedContainer}>
-                    <Text style={styles.label}>Texto Descriptografado:</Text>
-                    <Text style={styles.decryptedText}>{textoDescriptografado}</Text>
-                    <Button title="Deletar Texto" onPress={deletarTexto} color="red" />
-                </View>
-            )}
+            <View style={styles.contentContainer}>
+                <Text style={styles.label}>Texto Criptografado:</Text>
+                <Text style={styles.encryptedText}>{textoCriptografado}</Text>
+                <TextInput
+                    placeholder="Insira a chave de criptografia"
+                    style={styles.input}
+                    secureTextEntry
+                    value={chave}
+                    onChangeText={setChave}
+                />
+                <Button title="Descriptografar Texto" onPress={descriptografarTexto} />
+                {textoDescriptografado !== '' && (
+                    <View style={styles.decryptedContainer}>
+                        <Text style={styles.label}>Texto Descriptografado:</Text>
+                        <Text style={styles.decryptedText}>{textoDescriptografado}</Text>
+                        <Button title="Deletar Texto" onPress={deletarTexto} color="red" />
+                    </View>
+                )}
+            </View>
         </View>
     );
 }
@@ -73,17 +75,25 @@ export default function DecryptScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#fff',
+    },
+    contentContainer: {
+        width: '80%',
+        alignItems: 'center',
     },
     label: {
         fontWeight: 'bold',
         marginTop: 15,
+        textAlign: 'center',
     },
     encryptedText: {
         marginBottom: 20,
+        textAlign: 'center',
     },
     input: {
+        width: '100%',
         height: 50,
         borderColor: '#ccc',
         borderWidth: 1,
@@ -92,10 +102,12 @@ const styles = StyleSheet.create({
     },
     decryptedContainer: {
         marginTop: 20,
+        alignItems: 'center',
     },
     decryptedText: {
         fontSize: 16,
         color: 'green',
         marginBottom: 15,
+        textAlign: 'center',
     },
 });

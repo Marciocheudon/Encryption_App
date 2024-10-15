@@ -12,7 +12,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Criptografar Texto" component={HomeScreen} />
+        <Stack.Screen name="Criptografador de texto" component={HomeScreen} />
         <Stack.Screen name="Textos Criptografados" component={EncryptedTextsScreen} />
         <Stack.Screen name="Descriptografar Texto" component={DecryptScreen} />
       </Stack.Navigator>
